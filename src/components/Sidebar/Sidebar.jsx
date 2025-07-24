@@ -61,11 +61,11 @@ function Sidebar() {
 
             {/* BOTTOM */}
             <div className="px-4 py-4 border-t border-neutral-500 text-sm">
-                <Link to="" className="hover:bg-neutral-500 rounded px-2 py-2 cursor-pointer mb-2">
+                <Link to="settings" className="hover:bg-neutral-500 rounded px-2 py-2 cursor-pointer mb-2 flex items-center gap-2">
                     <img src={assets.settingsIcon} alt="Settings" className="w-5 h-5" />
                     {isExpanded ? <p>Settings</p> : null}
                 </Link>
-                <Link to="" className="hover:bg-red-600 rounded px-2 py-2 cursor-pointer">
+                <Link to="logout" className="hover:bg-red-600 rounded px-2 py-2 cursor-pointer flex items-center gap-2">
                     <img src={assets.logoutIcon} alt="Logout" className="w-5 h-5" />
                     {isExpanded ? <p>Logout</p> : null}
                 </Link>
