@@ -1,10 +1,16 @@
 import React from 'react'
 
 import { assets } from '../../assets/assets.js'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 function Sidebar() {
     const [isExpanded, setIsExpanded] = React.useState(true)
+    const location = useLocation();
+
+    const getLinkClass = (path) => 
+        `rounded px-2 py-2 cursor-pointer flex items-center gap-2 
+        ${location.pathname === path ? 'bg-blue-700 text-white' : 'hover:bg-neutral-500'}`;
+
 
     return (
         <div className={`h-screen bg-neutral-600 text-white transition-all duration-300 ${isExpanded ? 'w-64' : 'w-16'} flex flex-col justify-between`}>
@@ -16,7 +22,7 @@ function Sidebar() {
                     </h1>
                     <button
                         onClick={() => setIsExpanded(prev => !prev)}
-                        className="text-sm bg-gray-700 px-2 py-1 rounded hover:bg-gray-600"
+                        className="text-sm bg-neutral-800 px-2 py-1 rounded hover:bg-neutral-500"
                     >
                         {isExpanded ? '<' : '>'}
                     </button>
@@ -40,8 +46,8 @@ function Sidebar() {
                         <img src={assets.raritiesIcon} alt="Rarities" className="w-5 h-5" />
                         {isExpanded ? <p>Rarities</p> : null}
                     </Link>
-                    <Link to="/product" className="hover:bg-neutral-500 rounded px-2 py-2 cursor-pointer flex items-center gap-2">
-                        <img src={assets.productIcon} alt="Product" className="w-5 h-5" />
+                    <Link to="/products" className="hover:bg-neutral-500 rounded px-2 py-2 cursor-pointer flex items-center gap-2">
+                        <img src={assets.productIcon} alt="Products" className="w-5 h-5" />
                         {isExpanded ? <p>Product</p> : null}
                     </Link>
                     <Link to="/address" className="hover:bg-neutral-500 rounded px-2 py-2 cursor-pointer flex items-center gap-2">
@@ -54,7 +60,7 @@ function Sidebar() {
                     </Link>
                     <Link to="/order-items" className="hover:bg-neutral-500 rounded px-2 py-2 cursor-pointer flex items-center gap-2">
                         <img src={assets.orderItemIcon} alt="OrdersItems" className="w-5 h-5" />
-                        {isExpanded ? <p>Order Items</p> : null}
+                        {isExpanded ? <p className="">Order Items</p> : null}
                     </Link>
                 </nav>
             </div>
