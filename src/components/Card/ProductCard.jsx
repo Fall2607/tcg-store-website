@@ -22,13 +22,20 @@ const ProductCard = ({ product }) => {
         <p className="text-gray-600 text-sm mt-1">{product.set_name}</p>
         
         <div className="mt-2 flex justify-between items-center">
-          <span className="font-bold text-lg">${product.price.toFixed(2)}</span>
-          <span className={`text-sm ${
-            product.stock_quantity > 0 ? 'text-green-600' : 'text-red-600'
-          }`}>
-            {product.stock_quantity > 0 ? `${product.stock_quantity} in stock` : 'Out of stock'}
+          <span className="font-bold text-lg">
+            ${Number(product.price || 0).toFixed(2)}
+          </span>
+          <span
+            className={`text-sm ${
+              product.stock_quantity > 0 ? 'text-green-600' : 'text-red-600'
+            }`}
+          >
+            {product.stock_quantity > 0
+              ? `${product.stock_quantity} in stock`
+              : 'Out of stock'}
           </span>
         </div>
+
         
         <div className="mt-3 flex justify-between">
           <Link 

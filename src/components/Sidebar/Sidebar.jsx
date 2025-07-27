@@ -28,7 +28,7 @@ function Sidebar({ isExpanded, setIsExpanded }) {
         <nav className="mt-4 flex flex-col gap-2 px-2 text-sm">
           {[
             { to: "/", icon: assets.dashboardIcon, label: "Dashboard" },
-            { to: "/products", icon: assets.productIcon, label: "Product" },
+            { to: "/products2", icon: assets.productIcon, label: "Product2" },
             { to: "/sets", icon: assets.setsIcon, label: "Sets" },
             { to: "/rarities", icon: assets.raritiesIcon, label: "Rarities" },
             { to: "/users", icon: assets.usersIcon, label: "Users" },

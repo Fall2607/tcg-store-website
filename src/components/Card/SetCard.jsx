@@ -1,12 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 const SetCard = ({ set, onDelete }) => {
-
-    const [searchTerm, setSearchTerm] = useState('');
-
   return (
-    
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
       <div className="relative pb-[100%]"> {/* Aspect ratio 1:1 */}
         <img 

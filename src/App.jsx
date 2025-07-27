@@ -4,6 +4,7 @@ import Sidebar from './components/Sidebar/Sidebar'
 
 import Address from "./pages/Address"
 import Products from "./pages/Products"
+import Products2 from "./pages/Products2"
 import Dashboard from "./pages/Dashboard"
 import Users from "./pages/Users"
 import Sets from "./pages/Sets"
@@ -29,6 +30,7 @@ function App() {
           <Route path="/sets" element={<Sets />} />
           <Route path="/rarities" element={<Rarities />} />
           <Route path="/products" element={<Products />} />
+          <Route path="/products2" element={<Products2 />} />
           <Route path="/address" element={<Address />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/order-items" element={<OrderItems />} />
