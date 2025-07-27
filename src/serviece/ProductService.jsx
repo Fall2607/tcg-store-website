@@ -12,14 +12,12 @@ export const getProducts = () => fetch(API_URL).then(handleResponse);
 export const getProductById = (id) => fetch(`${API_URL}?id=${id}`).then(handleResponse);
 export const createProduct = (data) => fetch(API_URL, {
   method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(data),
+  body: data,
 }).then(handleResponse);
 
-export const updateProduct = (id, data) => fetch(`${API_URL}?id=${id}`, {
-  method: 'PUT',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(data),
+export const updateProduct = (data) => fetch(API_URL, { // URL tidak perlu lagi ?id=
+  method: 'POST',
+  body: data,
 }).then(handleResponse);
 
 export const deleteProduct = (id) => fetch(`${API_URL}?id=${id}`, {
