@@ -1,225 +1,107 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import ProductCard from "../components/Card/ProductCard";
+import React, { useEffect, useState } from "react";
+import {
+  getProducts,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+} from "../serviece/ProductService";
+
 import ProductModal from "../components/Modal/ProductModal";
-import TableComponent from "../components/TableComponent";
+import ProductCard from "../components/Card/ProductCard";
 
-const Products = () => {
+const Product = () => {
   const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [modalShow, setModalShow] = useState(false);
-    const [currentProduct, setCurrentProduct] = useState(null);
-  const productsData = [
-    { 
-      id: 1,
-      name: 'Charizard',
-      set_id: 1,
-      set_name: 'Base Set',
-      rarity_id: 3,
-      rarity_name: 'Rare Holo',
-      price: 299.99,
-      stock_quantity: 5,
-      condition: 'Mint',
-      image_url: '/charizard.jpg',
-      sku: 'PKM-BS-001',
-      description: 'First edition Charizard holographic card',
-      created_at: '2023-01-15'
-    },
-    { 
-      id: 1,
-      name: 'Charizard',
-      set_id: 1,
-      set_name: 'Base Set',
-      rarity_id: 3,
-      rarity_name: 'Rare Holo',
-      price: 299.99,
-      stock_quantity: 5,
-      condition: 'Mint',
-      image_url: '/charizard.jpg',
-      sku: 'PKM-BS-001',
-      description: 'First edition Charizard holographic card',
-      created_at: '2023-01-15'
-    },
-    { 
-      id: 1,
-      name: 'Charizard',
-      set_id: 1,
-      set_name: 'Base Set',
-      rarity_id: 3,
-      rarity_name: 'Rare Holo',
-      price: 299.99,
-      stock_quantity: 5,
-      condition: 'Mint',
-      image_url: '/charizard.jpg',
-      sku: 'PKM-BS-001',
-      description: 'First edition Charizard holographic card',
-      created_at: '2023-01-15'
-    },
-    { 
-      id: 1,
-      name: 'Charizard',
-      set_id: 1,
-      set_name: 'Base Set',
-      rarity_id: 3,
-      rarity_name: 'Rare Holo',
-      price: 299.99,
-      stock_quantity: 5,
-      condition: 'Mint',
-      image_url: '/charizard.jpg',
-      sku: 'PKM-BS-001',
-      description: 'First edition Charizard holographic card',
-      created_at: '2023-01-15'
-    },
-    { 
-      id: 1,
-      name: 'Charizard',
-      set_id: 1,
-      set_name: 'Base Set',
-      rarity_id: 3,
-      rarity_name: 'Rare Holo',
-      price: 299.99,
-      stock_quantity: 5,
-      condition: 'Mint',
-      image_url: '/charizard.jpg',
-      sku: 'PKM-BS-001',
-      description: 'First edition Charizard holographic card',
-      created_at: '2023-01-15'
-    },
-    // Data lainnya...
-  ];
+  const [loading, setLoading] = useState(true);
+  const [modalShow, setModalShow] = useState(false);
+  const [currentProduct, setCurrentProduct] = useState(null);
 
-  // const handleDelete = (id) => {
-  //   console.log('Delete product with id:', id);
-  //   // Implementasi delete
-  // };
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
-    const columns = [
-      { header: 'ID', accessor: 'id' },
-      { header: 'Nama', accessor: 'name' },
-      { header: 'Code', accessor: 'code' },
-      { header: 'Slug', accessor: 'slug' },
-      { header: 'Rilis', accessor: 'release_date' },
-      {
-        header: 'Aksi', accessor: 'actions',
-      },
-    ];
-  
-    useEffect(() => {
-      fetchSets();
-    }, []);
-  
-    const fetchSets = async () => {
-      setLoading(true);
+  const fetchProducts = async () => {
+    setLoading(true);
+    try {
+      const data = await getProducts();
+      setProducts(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAdd = () => {
+    setCurrentProduct(null);
+    setModalShow(true);
+  };
+
+  const handleDelete = async (id) => {
+    if (window.confirm("Yakin hapus set ini?")) {
       try {
-        const data = await getSets();
-        setSets(data);
+        await deleteProduct(id);
+        fetchProducts();
       } catch (err) {
         console.error(err);
-      } finally {
-        setLoading(false);
       }
-    };
-  
-    const handleAdd = () => {
-      setCurrentSet(null);
-      setModalShow(true);
-    };
-  
-    const handleEdit = (item) => {
-      setCurrentSet(item);
-      setModalShow(true);
-    };
-  
-    const handleDelete = async (id) => {
-      if (window.confirm('Yakin hapus set ini?')) {
-        try {
-          await deleteSet(id);
-          fetchSets();
-        } catch (err) {
-          console.error(err);
+    }
+  };
+
+  const handleSubmit = async (formData) => {
+    try {
+      const data = new FormData();
+      for (const key in formData) {
+        if (formData[key] !== null && formData[key] !== undefined) {
+          data.append(key, formData[key]);
         }
       }
-    };
-  
-    const handleSubmit = async (formData) => {
-      try {
-        if (currentSet) {
-          await updateSet(currentSet.id, formData);
-        } else {
-          await createSet(formData);
-        }
-        setModalShow(false);
-        fetchSets();
-      } catch (err) {
-        console.error('Gagal submit:', err);
+
+      if (currentProduct) {
+        // Untuk update, tambahkan id dan method override
+        data.append("_method", "PUT");
+        data.append("id", currentProduct.id);
+        await updateProduct(data);
+      } else {
+        await createProduct(data);
       }
-    };
-  
-    const formattedData = sets.map((item) => ({
-      ...item,
-      actions: (
-        <div className="flex space-x-2">
-          <button
-            onClick={() => handleEdit(item)}
-            className="px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"
-          >
-            Edit
-          </button>
-          <button
-            onClick={() => handleDelete(item.id)}
-            className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-          >
-            Hapus
-          </button>
-        </div>
-      ),
-    }));
-  
-    if (loading) return <div>Loading...</div>;
+
+      setModalShow(false);
+      fetchProducts();
+    } catch (err) {
+      console.error("Gagal submit:", err);
+    }
+  };
+
+  if (loading) return <div>Loading...</div>;
 
   return (
     <div className="container mx-auto px-4 py-6">
-      {/* <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Products Management</h1>
-        <Link 
-          to="/products/add"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+      <div className="py-4 border-b border-gray-200 flex justify-between items-center">
+        <h2 className="text-xl font-semibold text-gray-800">List Cards</h2>
+        <button
+          onClick={handleAdd}
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
         >
-          Add New Product
-        </Link>
-      </div> */}
+          Add New
+        </button>
+      </div>
 
-      <TableComponent
-        title="Set TCG"
-        columns={columns}
-        data={formattedData}
-        onAdd={handleAdd}
-      />
-
-      {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {productsData.map(product => (
-          // <ProductCard
-          //   key={product.id} 
-          //   product={product} 
-          //   onDelete={handleDelete}
-          // />
-          <TableComponent
-        title="Set TCG"
-        columns={columns}
-        data={formattedData}
-        onAdd={handleAdd}
-      />
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
+        {products.map((product) => (
+          <div key={product.id} className="w-full">
+            <ProductCard product={product} onDelete={handleDelete} />
+          </div>
         ))}
-      </div> */}
+      </div>
 
       <ProductModal
         show={modalShow}
         onClose={() => setModalShow(false)}
         onSubmit={handleSubmit}
-        initialData={currentSet}
+        initialData={currentProduct}
       />
     </div>
   );
 };
 
-export default Products;
+export default Product;

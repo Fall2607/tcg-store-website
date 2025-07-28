@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   getProducts,
   createProduct,
   updateProduct,
-  deleteProduct
-} from '../serviece/ProductService';
+  deleteProduct,
+} from "../serviece/ProductService";
 
 import ProductModal from "../components/Modal/ProductModal";
 import ProductCard from "../components/Card/ProductCard";
@@ -14,26 +14,6 @@ const Product2 = () => {
   const [loading, setLoading] = useState(true);
   const [modalShow, setModalShow] = useState(false);
   const [currentProduct, setCurrentProduct] = useState(null);
-
-
-  const columns = [
-    { header: 'ID', accessor: 'id' },
-    { header: 'Set ID', accessor: 'set_id' },
-    { header: 'Rarity ID', accessor: 'rarity_id' },
-    { header: 'Nama Produk', accessor: 'name' },
-    { header: 'Slug', accessor: 'slug' },
-    { header: 'Deskripsi', accessor: 'description' },
-    { header: 'Harga', accessor: 'price' },
-    { header: 'Stok', accessor: 'stock_quantity' },
-    { header: 'Kondisi', accessor: 'card_condition' },
-    { header: 'Gambar', accessor: 'image_url' },
-    { header: 'SKU', accessor: 'sku' },
-    {
-      header: 'Aksi',
-      accessor: 'actions'
-    }
-  ];
-
 
   useEffect(() => {
     fetchProducts();
@@ -56,13 +36,8 @@ const Product2 = () => {
     setModalShow(true);
   };
 
-  const handleEdit = (item) => {
-    setCurrentProduct(item);
-    setModalShow(true);
-  };
-
   const handleDelete = async (id) => {
-    if (window.confirm('Yakin hapus set ini?')) {
+    if (window.confirm("Yakin hapus set ini?")) {
       try {
         await deleteProduct(id);
         fetchProducts();
@@ -71,20 +46,6 @@ const Product2 = () => {
       }
     }
   };
-
-  // const handleSubmit = async (formData) => {
-  //   try {
-  //     if (currentProduct) {
-  //       await updateProduct(currentProduct.id, formData);
-  //     } else {
-  //       await createProduct(formData);
-  //     }
-  //     setModalShow(false);
-  //     fetchProducts();
-  //   } catch (err) {
-  //     console.error('Gagal submit:', err);
-  //   }
-  // };
 
   const handleSubmit = async (formData) => {
     try {
@@ -97,8 +58,8 @@ const Product2 = () => {
 
       if (currentProduct) {
         // Untuk update, tambahkan id dan method override
-        data.append('_method', 'PUT');
-        data.append('id', currentProduct.id);
+        data.append("_method", "PUT");
+        data.append("id", currentProduct.id);
         await updateProduct(data);
       } else {
         await createProduct(data);
@@ -107,12 +68,9 @@ const Product2 = () => {
       setModalShow(false);
       fetchProducts();
     } catch (err) {
-      console.error('Gagal submit:', err);
+      console.error("Gagal submit:", err);
     }
   };
-
-
-
 
   if (loading) return <div>Loading...</div>;
 
@@ -129,12 +87,9 @@ const Product2 = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
-        {products.map(product => (
+        {products.map((product) => (
           <div key={product.id} className="w-full">
-            <ProductCard
-              product={product}
-              onDelete={handleDelete}
-            />
+            <ProductCard product={product} onDelete={handleDelete} />
           </div>
         ))}
       </div>
