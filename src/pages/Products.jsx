@@ -47,30 +47,45 @@ const Product = () => {
     }
   };
 
-  const handleSubmit = async (formData) => {
-    try {
-      const data = new FormData();
-      for (const key in formData) {
-        if (formData[key] !== null && formData[key] !== undefined) {
-          data.append(key, formData[key]);
-        }
-      }
+  const handleSubmit = async (formObject) => {
+  try {
+    let dataToSend;
+
+    // Jika image_url bertipe File, maka gunakan FormData
+    if (formObject.image_url instanceof File) {
+      const formData = new FormData();
+      Object.entries(formObject).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
 
       if (currentProduct) {
-        // Untuk update, tambahkan id dan method override
-        data.append("_method", "PUT");
-        data.append("id", currentProduct.id);
+        formData.append("id", currentProduct.id);
+        await updateProduct(formData, true); // kirim flag FormData = true
+      } else {
+        await createProduct(formData, true); // flag FormData = true
+      }
+
+      dataToSend = formData;
+    } else {
+      const data = { ...formObject };
+      if (currentProduct) {
+        data.id = currentProduct.id;
         await updateProduct(data);
       } else {
         await createProduct(data);
       }
 
-      setModalShow(false);
-      fetchProducts();
-    } catch (err) {
-      console.error("Gagal submit:", err);
+      dataToSend = data;
     }
-  };
+
+    setModalShow(false);
+    fetchProducts();
+  } catch (err) {
+    console.error("Gagal submit:", err);
+  }
+};
+
+
 
   if (loading) return <div>Loading...</div>;
 
@@ -89,7 +104,13 @@ const Product = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
         {products.map((product) => (
           <div key={product.id} className="w-full">
-            <ProductCard product={product} onDelete={handleDelete} />
+            <ProductCard 
+              product={product} 
+              onDelete={handleDelete} 
+              onEdit={() =>{
+                setCurrentProduct(product);
+                setModalShow(true);
+              }}/>
           </div>
         ))}
       </div>

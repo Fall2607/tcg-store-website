@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const ProductCard = ({ product, onDelete }) => {
+const ProductCard = ({ product, onDelete , onEdit}) => {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
       <div className="relative pb-[100%]"> {/* Aspect ratio 1:1 */}
@@ -37,12 +37,12 @@ const ProductCard = ({ product, onDelete }) => {
 
 
         <div className="mt-3 flex justify-between">
-          <Link
-            to={`/products/edit/${product.id}`}
+          <button
+            onClick={() => onEdit(product)}
             className="text-blue-600 hover:text-blue-800 text-sm"
           >
             Edit
-          </Link>
+          </button>
           <button
             onClick={() => onDelete(product.id)}
             className="text-red-600 hover:text-red-800 text-sm"

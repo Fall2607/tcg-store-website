@@ -9,6 +9,7 @@ const ProductModal = ({ show, onClose, onSubmit, initialData }) => {
   const [sets, setSets] = useState([]);
 
   const defaultProductState = {
+    id: "",
     set_id: "",
     rarity_id: "",
     name: "",
