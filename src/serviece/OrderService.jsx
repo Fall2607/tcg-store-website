@@ -13,15 +13,15 @@ const handleResponse = async (response) => {
 export const getOrders = () => fetch(API_URL).then(handleResponse);
 export const getOrderById = (id) => fetch(`${API_URL}?id=${id}`).then(handleResponse);
 
-export const createOrder = (data) => fetch(API_URL,{
+export const createOrder = (data) => fetch(API_URL, {
   method: 'POST',
-  headers: {'content-Type': 'application/json'},
+  headers: { 'content-Type': 'application/json' },
   body: JSON.stringify(data),
 }).then(handleResponse);
 
-export const updateOrder = (id, data) => fetch(`${API_URL}?id=${id}`,{
+export const updateOrder = (id, data) => fetch(`${API_URL}?id=${id}`, {
   method: 'PUT',
-  headers: {'content-Type': 'application/json'},
+  headers: { 'content-Type': 'application/json' },
   body: JSON.stringify(data),
 })
 
